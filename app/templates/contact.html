@@ -1,0 +1,38 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mt-4">Contact Form</h2>
+    <p>Fill in this form to contact the site owners.</p>
+    <hr>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.name.label(class="form-label fw-bold") }} <span class="text-danger">(Required)</span>
+            {{ form.name(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.email.label(class="form-label fw-bold") }} <span class="text-danger">(Required)</span>
+            {{ form.email(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.subject.label(class="form-label fw-bold") }} <span class="text-danger">(Required)</span>
+            {{ form.subject(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.message.label(class="form-label fw-bold") }} <span class="text-danger">(Required)</span>
+            {{ form.message(class="form-control", rows=4) }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+    </form>
+</div>
+{% endblock %}
+

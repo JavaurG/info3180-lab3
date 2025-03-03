@@ -1,10 +1,52 @@
-from app import app
 from flask import render_template, request, redirect, url_for, flash
-
+from app import app, mail
+from app.forms import ContactForm
+from flask_mail import Message
 
 ###
 # Routing for your application.
 ###
+# @app.route("/contact", methods=["GET", "POST"])
+# def contact():
+#     form = ContactForm()
+#     if form.validate_on_submit():
+#         # Prepare email message
+#         msg = Message(
+#             subject=form.subject.data,
+#             sender=form.email.data,
+#             recipients=["your_email@example.com"],  # Replace with your recipient email
+#             body=f"From: {form.name.data} <{form.email.data}>\n\n{form.message.data}"
+#         )
+
+#         try:
+#             mail.send(msg)
+#             flash("Your message has been sent successfully!", "success")
+#             return redirect(url_for("contact"))
+#         except Exception as e:
+#             flash("There was an error sending your message. Please try again.", "danger")
+
+#     return render_template("contact.html", form=form)
+@app.route("/contact", methods=["GET", "POST"])
+def contact():
+    form = ContactForm()
+
+    if form.validate_on_submit():
+        # Create an email message
+        msg = Message(
+            subject=form.subject.data,
+            sender=(form.name.data, form.email.data),
+            recipients=["your_email@example.com"],  # Replace with your recipient email
+            body=f"From: {form.name.data} <{form.email.data}>\n\n{form.message.data}"
+        )
+
+        try:
+            mail.send(msg)
+            flash("Your message has been sent successfully!", "success")
+            return redirect(url_for("index"))  # Redirect to home page
+        except Exception as e:
+            flash("There was an error sending your message. Please try again.", "danger")
+
+    return render_template("contact.html", form=form)
 
 @app.route('/')
 def home():
